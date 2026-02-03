@@ -308,6 +308,220 @@ function Commands.Pos()
     L.Debug("Position", table.concat({ x, y, z }, ", "))
 end
 
+-------------------------------------------------------------------------------------------------
+--                                  Theme Debug Commands                                       --
+-------------------------------------------------------------------------------------------------
+
+-- List all available themes and how many enemies each has per tier
+function Commands.Themes()
+    L.Info("=== Available Enemy Themes ===")
+    local themes = Enemy.GetAvailableThemes()
+
+    for themeName, tiers in pairs(themes) do
+        local tierCounts = {}
+        for _, tier in ipairs(tiers) do
+            local count = #Enemy.GetByThemeAndTier(themeName, tier)
+            table.insert(tierCounts, tier .. ":" .. count)
+        end
+        L.Info(themeName, "- Tiers:", table.concat(tierCounts, ", "))
+    end
+
+    L.Info("")
+    L.Info("Use: !TT ThemeEnemies <themeName> [tier]")
+end
+
+-- List enemies for a specific theme (optionally filtered by tier)
+function Commands.ThemeEnemies(themeName, tier)
+    if not themeName then
+        L.Error("Theme name required. Use !TT Themes to see available themes.")
+        return
+    end
+
+    if not C.EnemyThemes[themeName] then
+        L.Error("Unknown theme:", themeName)
+        L.Info("Available themes:", table.concat(table.keys(C.EnemyThemes), ", "))
+        return
+    end
+
+    local enemies
+    if tier then
+        enemies = Enemy.GetByThemeAndTier(themeName, tier)
+        L.Info(string.format("=== %s Enemies (Tier: %s) ===", themeName, tier))
+    else
+        enemies = Enemy.GetByTheme(themeName)
+        L.Info(string.format("=== %s Enemies (All Tiers) ===", themeName))
+    end
+
+    if #enemies == 0 then
+        L.Info("No enemies found.")
+        return
+    end
+
+    for i, enemy in ipairs(enemies) do
+        L.Info(i, enemy.Name, "- Tier:", enemy.Tier)
+    end
+
+    L.Info("")
+    L.Info("Total:", #enemies, "enemies")
+end
+
+-- Spawn a random enemy from a specific theme
+function Commands.SpawnTheme(themeName, tier)
+    if not IsActive() then
+        L.Error("Mod is not active.")
+        return
+    end
+
+    if not themeName then
+        L.Error("Theme name required. Use !TT Themes to see available themes.")
+        return
+    end
+
+    if not C.EnemyThemes[themeName] then
+        L.Error("Unknown theme:", themeName)
+        return
+    end
+
+    local enemies
+    if tier then
+        enemies = Enemy.GetByThemeAndTier(themeName, tier)
+    else
+        enemies = Enemy.GetByTheme(themeName)
+    end
+
+    if #enemies == 0 then
+        L.Error("No enemies found for theme:", themeName, tier or "(all tiers)")
+        return
+    end
+
+    local enemy = enemies[math.random(#enemies)]
+    L.Info("Spawning:", enemy.Name, "- Tier:", enemy.Tier, "- Theme:", themeName)
+
+    local x, y, z = Player.Pos()
+    local ok, chainable = enemy:Spawn(x, y, z, false)
+
+    if ok then
+        chainable:After(function()
+            enemy:Combat()
+            L.Info("Spawned successfully:", enemy.Name)
+        end)
+    else
+        L.Error("Failed to spawn enemy.")
+    end
+end
+
+-- Start a scenario with a specific theme
+function Commands.StartThemed(themeName, scenarioId, mapId)
+    if not IsActive() then
+        L.Error("Mod is not active.")
+        return
+    end
+
+    if not themeName then
+        L.Error("Theme name required.")
+        L.Info("Usage: !TT StartThemed <themeName> [scenarioId] [mapId]")
+        L.Info("Use !TT Themes to see available themes.")
+        return
+    end
+
+    if not C.EnemyThemes[themeName] then
+        L.Error("Unknown theme:", themeName)
+        return
+    end
+
+    scenarioId = tonumber(scenarioId) or 1
+    mapId = tonumber(mapId) or 1
+
+    local map = Map.Get(Player.Region())[mapId]
+    local template = Scenario.GetTemplates()[scenarioId]
+
+    if map == nil then
+        L.Error("Map not found. Use !TT Maps to see available maps.")
+        return
+    end
+    if template == nil then
+        L.Error("Scenario not found. Use !TT Scenarios to see available scenarios.")
+        return
+    end
+
+    -- Override the theme
+    template.Theme = themeName
+    template.RandomTheme = false
+
+    L.Info("Starting scenario with theme:", themeName)
+    L.Dump("Scenario:", template.Name, "Map:", map.Name)
+
+    Scenario.Start(template, map)
+
+    -- Reset for next time
+    template.Theme = nil
+    template.RandomTheme = nil
+end
+
+-- Show current scenario's theme
+function Commands.CurrentTheme()
+    local s = Scenario.Current()
+    if not s then
+        L.Info("No active scenario.")
+        return
+    end
+
+    L.Info("=== Current Scenario ===")
+    L.Info("Name:", s.Name)
+    L.Info("Theme:", s.Theme or "(none/random)")
+    L.Info("Round:", s.Round, "/", #s.Timeline)
+
+    if s.Theme then
+        local themeInfo = C.EnemyThemes[s.Theme]
+        if themeInfo then
+            L.Info("Theme Description:", themeInfo.description)
+            L.Info("Theme Patterns:", table.concat(themeInfo.patterns, ", "))
+        end
+    end
+
+    -- Show spawned enemies and their themes
+    if #s.SpawnedEnemies > 0 then
+        L.Info("")
+        L.Info("Spawned Enemies:")
+        for i, enemy in ipairs(s.SpawnedEnemies) do
+            local enemyTheme = Enemy.GetTheme(enemy) or "unknown"
+            L.Info(i, enemy.Name, "- Tier:", enemy.Tier, "- Theme:", enemyTheme)
+        end
+    end
+end
+
+-- Test theme detection on all enemies
+function Commands.TestThemes()
+    L.Info("=== Testing Theme Detection ===")
+
+    local themed = 0
+    local unthemed = 0
+    local unthemedList = {}
+
+    for _, enemy in Enemy.Iter() do
+        local theme = Enemy.GetTheme(enemy)
+        if theme then
+            themed = themed + 1
+        else
+            unthemed = unthemed + 1
+            if #unthemedList < 20 then
+                table.insert(unthemedList, enemy.Name)
+            end
+        end
+    end
+
+    L.Info("Themed enemies:", themed)
+    L.Info("Unthemed enemies:", unthemed)
+
+    if #unthemedList > 0 then
+        L.Info("")
+        L.Info("Sample unthemed enemies (first 20):")
+        for _, name in ipairs(unthemedList) do
+            L.Info(" -", name)
+        end
+    end
+end
+
 function Commands.Reload()
     if not IsActive() then
         L.Error("Mod is not active.")
