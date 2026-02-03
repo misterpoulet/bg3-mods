@@ -584,6 +584,97 @@ function Enemy.GetByTemplateId(templateId, templates)
     return list
 end
 
+---@param themeName string The theme name (e.g., "Undead", "Drow", "Goblinoid")
+---@param templates table|nil Optional templates to filter from
+---@return Enemy[]
+function Enemy.GetByTheme(themeName, templates)
+    local theme = C.EnemyThemes[themeName]
+    if not theme then
+        L.Error("Unknown theme:", themeName)
+        return {}
+    end
+
+    local list = {}
+    for _, enemy in Enemy.Iter(templates) do
+        if Enemy.MatchesTheme(enemy, themeName) then
+            table.insert(list, enemy)
+        end
+    end
+
+    return list
+end
+
+---@param themeName string The theme name
+---@param tier string The tier to filter by
+---@param templates table|nil Optional templates to filter from
+---@return Enemy[]
+function Enemy.GetByThemeAndTier(themeName, tier, templates)
+    local theme = C.EnemyThemes[themeName]
+    if not theme then
+        L.Error("Unknown theme:", themeName)
+        return {}
+    end
+
+    local list = {}
+    for _, enemy in Enemy.Iter(templates) do
+        if enemy.Tier == tier and Enemy.MatchesTheme(enemy, themeName) then
+            table.insert(list, enemy)
+        end
+    end
+
+    return list
+end
+
+---@param enemy Enemy The enemy to check
+---@param themeName string The theme name to match against
+---@return boolean
+function Enemy.MatchesTheme(enemy, themeName)
+    local theme = C.EnemyThemes[themeName]
+    if not theme then
+        return false
+    end
+
+    for _, pattern in ipairs(theme.patterns) do
+        if string.find(enemy.Name, pattern, 1, true) then
+            return true
+        end
+    end
+
+    return false
+end
+
+---@param enemy Enemy The enemy to get theme for
+---@return string|nil themeName The first matching theme name, or nil if no match
+function Enemy.GetTheme(enemy)
+    for themeName, theme in pairs(C.EnemyThemes) do
+        for _, pattern in ipairs(theme.patterns) do
+            if string.find(enemy.Name, pattern, 1, true) then
+                return themeName
+            end
+        end
+    end
+    return nil
+end
+
+---@return table<string, string[]> A table of theme names to list of tiers available
+function Enemy.GetAvailableThemes(templates)
+    local themes = {}
+    for themeName, _ in pairs(C.EnemyThemes) do
+        local tiers = {}
+        for _, enemy in Enemy.Iter(templates) do
+            if Enemy.MatchesTheme(enemy, themeName) then
+                if not table.contains(tiers, enemy.Tier) then
+                    table.insert(tiers, enemy.Tier)
+                end
+            end
+        end
+        if #tiers > 0 then
+            themes[themeName] = tiers
+        end
+    end
+    return themes
+end
+
 Enemy.GetTemplates = Cached(function()
     return table.filter(External.Templates.GetEnemies(), function(v)
         local template = Ext.Template.GetRootTemplate(v.TemplateId)

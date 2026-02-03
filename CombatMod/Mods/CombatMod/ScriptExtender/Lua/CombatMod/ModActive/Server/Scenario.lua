@@ -17,6 +17,7 @@
 ---@field Positions table<number, number> Index, Spawn
 ---@field LootRates table<string, table<string, number>>
 ---@field OnMap boolean
+---@field Theme string|nil The enemy theme for this scenario (e.g., "Undead", "Drow")
 ---@field New fun(self): self
 local Object = Libs.Struct({
     Name = nil,
@@ -32,6 +33,7 @@ local Object = Libs.Struct({
     LootRates = {},
     CombatHelper = nil,
     EnemyFallback = {},
+    Theme = nil,
 })
 -- to only send the notifs once
 seenAvatar = false
@@ -247,6 +249,10 @@ function Action.UpdateHelperName()
         __("Upcoming Spawns: %s", tostring(#(s.Enemies[s.Round + 1] or {}))),
         __("Kill Score: %s", s:KillScore()),
     }
+
+    if s.Theme then
+        table.insert(text, 2, __("Theme: %s", s.Theme))
+    end
 
     Ext.Loca.UpdateTranslatedString(C.ScenarioHelper.Handle, table.concat(text, "\n"))
 end
@@ -615,6 +621,38 @@ function Scenario.Current()
     return S()
 end
 
+---@param templates table|nil Optional enemy templates to check against
+---@return string|nil themeName A randomly selected theme that has enemies, or nil
+function Scenario.PickRandomTheme(templates)
+    local availableThemes = Enemy.GetAvailableThemes(templates)
+
+    -- Filter to themes that have at least 3 different tiers (for variety)
+    local viableThemes = {}
+    for themeName, tiers in pairs(availableThemes) do
+        if #tiers >= 2 then
+            table.insert(viableThemes, themeName)
+        end
+    end
+
+    if #viableThemes == 0 then
+        -- Fallback: use any theme with enemies
+        for themeName, _ in pairs(availableThemes) do
+            table.insert(viableThemes, themeName)
+        end
+    end
+
+    if #viableThemes == 0 then
+        return nil
+    end
+
+    return viableThemes[math.newRandom(#viableThemes)]
+end
+
+---@return table<string, table> Available themes with their tier counts
+function Scenario.GetAvailableThemes()
+    return Enemy.GetAvailableThemes()
+end
+
 ---@param state Scenario
 function Scenario.RestoreFromSave(state)
     xpcall(function()
@@ -729,9 +767,35 @@ function Scenario.Start(template, map)
             enemyTemplates = template.Enemies
         end
     end
+
+    -- Determine theme for this scenario
+    local scenarioTheme = nil
+    if template.Theme then
+        -- Use explicitly set theme
+        scenarioTheme = template.Theme
+    elseif template.RandomTheme ~= false then
+        -- Pick a random theme that has enemies available
+        scenarioTheme = Scenario.PickRandomTheme(enemyTemplates)
+    end
+
+    if scenarioTheme then
+        L.Info("Scenario theme selected:", scenarioTheme)
+        scenario.Theme = scenarioTheme
+    end
+
     local function getEnemy(definition)
         if table.contains(C.EnemyTier, definition) then
-            local enemies = Enemy.GetByTier(definition, enemyTemplates)
+            local enemies = {}
+
+            -- If we have a theme, try to get enemies matching both theme and tier
+            if scenarioTheme then
+                enemies = Enemy.GetByThemeAndTier(scenarioTheme, definition, enemyTemplates)
+            end
+
+            -- Fallback to all enemies of that tier if theme has no matches
+            if #enemies == 0 then
+                enemies = Enemy.GetByTier(definition, enemyTemplates)
+            end
 
             return enemies[math.newRandom(#enemies)]
         end
@@ -766,7 +830,11 @@ function Scenario.Start(template, map)
         table.insert(scenario.Positions, math.newRandom(#map.Spawns))
     end
 
-    Player.Notify(__("Scenario %s started.", template.Name))
+    if scenario.Theme then
+        Player.Notify(__("Scenario %s started. Theme: %s", template.Name, scenario.Theme))
+    else
+        Player.Notify(__("Scenario %s started.", template.Name))
+    end
     PersistentVars.Scenario = scenario
 
     Action.NotifyStarted()

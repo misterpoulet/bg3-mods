@@ -14,6 +14,69 @@ C = {
         Faction = "4be9261a-e481-8d9d-3528-f36956a19b17",
     },
     MapHelper = "c13a872b-7d9b-4c1d-8c65-f672333b0c11",
+    -- Themed enemy groups: patterns to match against enemy names
+    EnemyThemes = {
+        Undead = {
+            patterns = { "Zombie", "Skeleton", "Undead", "Necro", "Wraith", "Ghoul", "Ghast", "Wight", "Mummy", "Lich", "Vampire", "Shadow_Wraith", "Myrkul", "Bodhi" },
+            description = "Undead creatures",
+        },
+        Drow = {
+            patterns = { "Drow", "DrowLolth", "DrowCpt", "DrowSha" },
+            description = "Dark elves from the Underdark",
+        },
+        Goblinoid = {
+            patterns = { "Goblin", "Hobgoblin", "Bugbear", "Goblins" },
+            description = "Goblinoids",
+        },
+        Githyanki = {
+            patterns = { "Githyanki", "Gith", "Vlaakith", "Zrell", "Kithrak" },
+            description = "Githyanki warriors",
+        },
+        Devil = {
+            patterns = { "Devil", "Imp", "Cambion", "Zariel", "Dispater", "Glasya", "Fierna", "Belial", "Mephisto", "Asmo", "Raphael", "Mizora", "Erinyes", "Malebranche", "PitFiend", "Falxugon" },
+            description = "Devils from the Nine Hells",
+        },
+        Demon = {
+            patterns = { "Demon", "Balor", "Marilith", "Quasit", "ShadowDemon" },
+            description = "Demons from the Abyss",
+        },
+        Giant = {
+            patterns = { "Giant", "FireGiant", "FrostGiant", "StoneGiant", "CloudGiant", "StormGiant", "Ogre", "Troll" },
+            description = "Giants and giant-kin",
+        },
+        Beast = {
+            patterns = { "Spider", "Wolf", "Bear", "Boar", "Rat", "Hyena", "Eagle", "Owl", "Displacer", "HookHorror", "Alioramus", "Rothe" },
+            description = "Beasts and monstrosities",
+        },
+        Construct = {
+            patterns = { "Golem", "Construct", "Retriever", "Steel_Watcher", "Automaton" },
+            description = "Constructed creatures",
+        },
+        Elemental = {
+            patterns = { "Elemental", "Myrmidon", "Mephit", "Djinni", "Efreeti" },
+            description = "Elemental creatures",
+        },
+        Mindflayer = {
+            patterns = { "Mindflayer", "Illithid", "Intellect_Devourer", "Netherbrain", "Ulitharid" },
+            description = "Mind flayers and their thralls",
+        },
+        Kobold = {
+            patterns = { "Kobold", "Kobolds" },
+            description = "Kobolds",
+        },
+        FlamingFist = {
+            patterns = { "FlamingFist", "Flaming_Fist" },
+            description = "Flaming Fist mercenaries",
+        },
+        Celestial = {
+            patterns = { "Solar", "Planetar", "Eladrin", "Hollyphant", "Angel" },
+            description = "Celestial beings",
+        },
+        Harpy = {
+            patterns = { "Harpy" },
+            description = "Harpies",
+        },
+    },
     ItemRarity = {
         "Common",
         "Uncommon",
