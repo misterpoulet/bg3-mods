@@ -16,28 +16,29 @@ C = {
     MapHelper = "c13a872b-7d9b-4c1d-8c65-f672333b0c11",
     -- Themed enemy groups: patterns to match against enemy names
     EnemyThemes = {
+        -- Major races/factions
         Undead = {
-            patterns = { "Zombie", "Skeleton", "Undead", "Necro", "Wraith", "Ghoul", "Ghast", "Wight", "Mummy", "Lich", "Vampire", "Shadow_Wraith", "Myrkul", "Bodhi" },
+            patterns = { "Zombie", "Skeleton", "Undead", "Necro", "Wraith", "Ghoul", "Ghast", "Wight", "Mummy", "Lich", "Vampire", "Shadow_Wraith", "Myrkul", "Bodhi", "DeathKnight", "Ghost", "Demilich", "Cazador", "DarkJusticiar", "Nightwalker", "Meenlock" },
             description = "Undead creatures",
         },
         Drow = {
-            patterns = { "Drow", "DrowLolth", "DrowCpt", "DrowSha" },
+            patterns = { "Drow", "DrowLolth", "DrowCpt", "DrowSha", "Viconia", "Oblodra", "Yochlol" },
             description = "Dark elves from the Underdark",
         },
         Goblinoid = {
-            patterns = { "Goblin", "Hobgoblin", "Bugbear", "Goblins" },
+            patterns = { "Goblin", "Hobgoblin", "Bugbear", "Goblins", "DrorRagzlin", "PriestessGut" },
             description = "Goblinoids",
         },
         Githyanki = {
-            patterns = { "Githyanki", "Gith", "Vlaakith", "Zrell", "Kithrak" },
+            patterns = { "Githyanki", "Gith", "Vlaakith", "Zrell", "Kithrak", "Orpheus", "GithInquisitor", "GithPaladin", "AncientGith", "Therezzyn" },
             description = "Githyanki warriors",
         },
         Devil = {
-            patterns = { "Devil", "Imp", "Cambion", "Zariel", "Dispater", "Glasya", "Fierna", "Belial", "Mephisto", "Asmo", "Raphael", "Mizora", "Erinyes", "Malebranche", "PitFiend", "Falxugon" },
+            patterns = { "Devil", "Imp", "Cambion", "Zariel", "Dispater", "Glasya", "Fierna", "Belial", "Mephisto", "Asmo", "Raphael", "Mizora", "Erinyes", "Malebranche", "PitFiend", "Falxugon", "Merregon", "Orthon", "Abishai", "Haarlep", "Helsik", "Boar_Devil", "Boar_Raphael" },
             description = "Devils from the Nine Hells",
         },
         Demon = {
-            patterns = { "Demon", "Balor", "Marilith", "Quasit", "ShadowDemon" },
+            patterns = { "Demon", "Balor", "Marilith", "Quasit", "ShadowDemon", "Glabrezu", "Yochlol" },
             description = "Demons from the Abyss",
         },
         Giant = {
@@ -45,19 +46,19 @@ C = {
             description = "Giants and giant-kin",
         },
         Beast = {
-            patterns = { "Spider", "Wolf", "Bear", "Boar", "Rat", "Hyena", "Eagle", "Owl", "Displacer", "HookHorror", "Alioramus", "Rothe" },
+            patterns = { "Spider", "Wolf", "Bear", "Boar", "Rat", "Hyena", "Eagle", "Owl", "Displacer", "HookHorror", "Alioramus", "Rothe", "Panther", "Sabretooth", "Bat", "Worg", "Owlbear", "Bulette", "Badger", "Dog", "Hound", "OX_", "BIRD_", "Bird_", "Ettercap", "Cloaker", "Mimic" },
             description = "Beasts and monstrosities",
         },
         Construct = {
-            patterns = { "Golem", "Construct", "Retriever", "Steel_Watcher", "Automaton" },
+            patterns = { "Golem", "Construct", "Retriever", "SteelWatcher", "Steel_Watcher", "Automaton", "AnimatedArmor", "HollowArmor", "Bernard" },
             description = "Constructed creatures",
         },
         Elemental = {
-            patterns = { "Elemental", "Myrmidon", "Mephit", "Djinni", "Efreeti" },
-            description = "Elemental creatures",
+            patterns = { "Elemental", "Myrmidon", "Mephit", "Djinni", "Efreeti", "Azer", "Ooze", "ShamblingMound", "WoodWoad", "BLIGHT", "Blight", "VINE", "Vine", "Myconid" },
+            description = "Elemental and nature creatures",
         },
         Mindflayer = {
-            patterns = { "Mindflayer", "Illithid", "Intellect_Devourer", "Netherbrain", "Ulitharid" },
+            patterns = { "Mindflayer", "MindFlayer", "Illithid", "Intellect_Devourer", "Intellect_Detonator", "Netherbrain", "Ulitharid", "Alhoon", "MindMaster", "Cranium_Rat" },
             description = "Mind flayers and their thralls",
         },
         Kobold = {
@@ -65,16 +66,83 @@ C = {
             description = "Kobolds",
         },
         FlamingFist = {
-            patterns = { "FlamingFist", "Flaming_Fist" },
+            patterns = { "FlamingFist", "Flaming_Fist", "CountingHouse" },
             description = "Flaming Fist mercenaries",
         },
         Celestial = {
-            patterns = { "Solar", "Planetar", "Eladrin", "Hollyphant", "Angel" },
+            patterns = { "Solar", "Planetar", "Eladrin", "Hollyphant", "Angel", "Deva", "Nightsong" },
             description = "Celestial beings",
         },
         Harpy = {
             patterns = { "Harpy" },
             description = "Harpies",
+        },
+        -- Humanoid factions
+        Human = {
+            patterns = { "Humans_", "Human_", "Bandit", "Smuggler", "Smugger", "Corsair", "Pirate", "CountingHouse", "Zhent", "Anders", "Aradin", "Wulbren", "Roah", "Devella", "Guild", "Surgeon", "Brewer", "TollCollector", "Keene" },
+            description = "Human enemies and bandits",
+        },
+        Dwarf = {
+            patterns = { "Dwarf", "Dwarves", "Duergar" },
+            description = "Dwarves and Duergar",
+        },
+        Tiefling = {
+            patterns = { "Tiefling", "Tieflings" },
+            description = "Tieflings",
+        },
+        HalfOrc = {
+            patterns = { "HalfOrc", "HalfOrcs" },
+            description = "Half-Orcs",
+        },
+        Cultist = {
+            patterns = { "Cultist", "Sharran", "Bhaal", "Bane", "DeadThree", "Sarevok", "Orin", "Slayer", "Abdirak", "MyrkuliteLord" },
+            description = "Cultists of various dark gods",
+        },
+        Absolute = {
+            patterns = { "Absolute", "Ketheric", "Gortash", "Nere", "Thrall_" },
+            description = "Soldiers of the Absolute",
+        },
+        -- Monster types
+        Gnoll = {
+            patterns = { "Gnoll", "Flind", "FangOfYeenoghu" },
+            description = "Gnolls and hyena-kin",
+        },
+        Werewolf = {
+            patterns = { "Werewolf", "LoupGarou" },
+            description = "Werewolves and lycanthropes",
+        },
+        Fey = {
+            patterns = { "Fey", "Pixie", "Redcap", "Hag", "Ethel", "Dryad", "Leafsong" },
+            description = "Fey creatures",
+        },
+        Beholder = {
+            patterns = { "Beholder", "Spectator" },
+            description = "Beholders and beholder-kin",
+        },
+        Dragon = {
+            patterns = { "Dragon", "Ansur" },
+            description = "Dragons",
+        },
+        Sahuagin = {
+            patterns = { "Sahuagin", "Kuotoa" },
+            description = "Aquatic creatures",
+        },
+        Shadow = {
+            patterns = { "Shadow_A", "Shadow_Dog", "ShadowOwlbear", "Shadow_Wraith", "ShadarKai" },
+            description = "Shadow creatures",
+        },
+        Minotaur = {
+            patterns = { "Minotaur" },
+            description = "Minotaurs",
+        },
+        Doppelganger = {
+            patterns = { "Doppelganger" },
+            description = "Doppelgangers and shapeshifters",
+        },
+        -- Named/Legendary enemies (for special encounters)
+        Legendary = {
+            patterns = { "Elminster", "Drizzt", "Minsc", "Jaheira", "JonIrenicus", "Lorroakan", "Balthazar", "Iggwilv", "Tarrasque", "Ravager", "Kagha" },
+            description = "Legendary heroes and villains",
         },
     },
     ItemRarity = {
