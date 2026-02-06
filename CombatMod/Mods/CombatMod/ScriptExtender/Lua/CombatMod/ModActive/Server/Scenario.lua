@@ -787,6 +787,8 @@ function Scenario.Start(template, map)
         scenario.Theme = scenarioTheme
     elseif not themeSuccess then
         L.Error("Failed to select theme:", themeResult)
+    else
+        L.Info("No theme selected (themeResult is nil)")
     end
 
     local function getEnemy(definition)
@@ -800,13 +802,17 @@ function Scenario.Start(template, map)
                 end)
                 if success and result then
                     enemies = result
+                    L.Info("Theme:", scenarioTheme, "Tier:", definition, "Found:", #enemies, "enemies")
                 else
                     L.Warn("Theme lookup failed, falling back to tier:", definition)
                 end
+            else
+                L.Info("No theme set, using random selection for tier:", definition)
             end
 
             -- Fallback to all enemies of that tier if theme has no matches
             if #enemies == 0 then
+                L.Info("Falling back to all enemies for tier:", definition)
                 enemies = Enemy.GetByTier(definition, enemyTemplates)
             end
 
@@ -816,7 +822,9 @@ function Scenario.Start(template, map)
                 return nil
             end
 
-            return enemies[math.newRandom(#enemies)]
+            local selected = enemies[math.newRandom(#enemies)]
+            L.Info("Selected enemy:", selected.Name, "for tier:", definition)
+            return selected
         end
 
         return Enemy.Find(definition, enemyTemplates)
