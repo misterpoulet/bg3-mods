@@ -191,8 +191,12 @@ function Control.RunningPanel(root)
 
         Components.Computed(scenarioName, function(box, state)
             if state.Scenario then
+                local scenarioLine = __("Scenario: %s", tostring(state.Scenario.Name))
+                if state.Scenario.Theme then
+                    scenarioLine = scenarioLine .. " | " .. __("Theme: %s", state.Scenario.Theme)
+                end
                 local text = {
-                    __("Scenario: %s", tostring(state.Scenario.Name)),
+                    scenarioLine,
                     __("Round: %s", tostring(state.Scenario.Round)),
                     __("Total Rounds: %s", tostring(#state.Scenario.Timeline)),
                     __("Upcoming Spawns: %s", tostring(#(state.Scenario.Enemies[state.Scenario.Round + 1] or {}))),
