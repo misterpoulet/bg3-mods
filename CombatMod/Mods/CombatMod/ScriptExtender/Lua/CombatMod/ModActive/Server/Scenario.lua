@@ -768,19 +768,25 @@ function Scenario.Start(template, map)
         end
     end
 
-    -- Determine theme for this scenario
+    -- Determine theme for this scenario (wrapped in pcall for safety)
     local scenarioTheme = nil
-    if template.Theme then
-        -- Use explicitly set theme
-        scenarioTheme = template.Theme
-    elseif template.RandomTheme ~= false then
-        -- Pick a random theme that has enemies available
-        scenarioTheme = Scenario.PickRandomTheme(enemyTemplates)
-    end
+    local themeSuccess, themeResult = pcall(function()
+        if template.Theme then
+            -- Use explicitly set theme
+            return template.Theme
+        elseif template.RandomTheme ~= false then
+            -- Pick a random theme that has enemies available
+            return Scenario.PickRandomTheme(enemyTemplates)
+        end
+        return nil
+    end)
 
-    if scenarioTheme then
+    if themeSuccess and themeResult then
+        scenarioTheme = themeResult
         L.Info("Scenario theme selected:", scenarioTheme)
         scenario.Theme = scenarioTheme
+    elseif not themeSuccess then
+        L.Error("Failed to select theme:", themeResult)
     end
 
     local function getEnemy(definition)
@@ -789,12 +795,25 @@ function Scenario.Start(template, map)
 
             -- If we have a theme, try to get enemies matching both theme and tier
             if scenarioTheme then
-                enemies = Enemy.GetByThemeAndTier(scenarioTheme, definition, enemyTemplates)
+                local success, result = pcall(function()
+                    return Enemy.GetByThemeAndTier(scenarioTheme, definition, enemyTemplates)
+                end)
+                if success and result then
+                    enemies = result
+                else
+                    L.Warn("Theme lookup failed, falling back to tier:", definition)
+                end
             end
 
             -- Fallback to all enemies of that tier if theme has no matches
             if #enemies == 0 then
                 enemies = Enemy.GetByTier(definition, enemyTemplates)
+            end
+
+            -- Safety check: ensure we have enemies before random selection
+            if #enemies == 0 then
+                L.Error("No enemies found for tier:", definition)
+                return nil
             end
 
             return enemies[math.newRandom(#enemies)]
