@@ -1,7 +1,7 @@
 ---@type Mod
 Mod = Require("Hlib/Mod")
 Mod.EnableRCE = true
-Mod.Prefix = "Trials of Tav"
+Mod.Prefix = "Trials of JeanBon"
 Mod.TableKey = "ToT"
 
 Require("Hlib/StandardLib") -- extends global metatables
