@@ -1,0 +1,197 @@
+
+  ******************************************************************************
+  *                                                                            *
+  *                     BG3 Script Extender Debug Console                      *
+  *                                                                            *
+  ******************************************************************************
+
+  BG3Ext v30 built on Feb  6 2026 20:03:48
+  Game version v4.69.95.620 OK
+  ScriptExtender::Initialize: Starting
+  Library startup took 1552 ms
+  We're already past App load, triggering CoreLibInit
+  LibraryManager::PostStartupFindLibraries() took 176 ms
+  Fossilize ERROR: Failed to parse ApplicationInfoFilter, letting recording go through.
+  Fossilize ERROR: Failed to parse ApplicationInfoFilter, letting recording go through.
+  Fossilize INFO: Overriding serialization path: "C:\Program Files
+  (x86)\Steam\steamapps\shadercache\1086940\fozpipelinesv6\steamapprun_pipeline_cache".
+  Removed ModCrashSanityCheck
+      'Mod Configuration Menu': SE v29; flags: Lua
+      'Expansion': SE v15; flags: Lua
+  Merged config: SE v29; flags: Lua
+  Initializing client with target context Load
+  Modded achievements enabled.
+  LUA VM reset
+  Loading preinit bootstrap script: Mods/Expansion/ScriptExtender/Lua/BootstrapModule.lua
+      'Mod Configuration Menu': SE v29; flags: Lua
+      'Expansion': SE v15; flags: Lua
+  Merged config: SE v29; flags: Lua
+  Initializing client with target context Game
+  LUA VM reset
+  Loading bootstrap script: Mods/BG3MCM/ScriptExtender/Lua/BootstrapClient.lua
+  [Mod Configuration Menu][C]: Volitio's Baldur's Gate 3 Mod Configuration Menu version 1.38.2 loaded (SE version 30)
+  [Mod Configuration Menu][C]: Finished loading MCM blueprints
+  Loading bootstrap script: Mods/Expansion/ScriptExtender/Lua/BootstrapClient.lua
+  bg3se::lua::stats::LuaStatSetAttribute(): Stats edited after ModuleLoad must be synced manually; make sure that you call Sync() on it when
+  you're finished!
+  Expansion: Barbarian's Optional Features enabled.
+  Expansion: Bard's Optional Features enabled.
+  Expansion: Cleric's Optional Features enabled.
+  Expansion: Druid's Optional Features enabled.
+  Expansion: Fighter's Optional Features enabled.
+  Expansion: Monk's Optional Features enabled.
+  Expansion: Paladin's Optional Features enabled.
+  Expansion: Ranger's Optional Features enabled.
+  Expansion: Rogue's Optional Features enabled.
+  Expansion: Sorcerer's Optional Features enabled.
+  Expansion: Disabled changing Sorcerer Subclasses' 11th level feature to 14th level.
+  Expansion: Warlock's Optional Features enabled.
+  Expansion: Wizard's Optional Features enabled.
+  Expansion: Keeping the Wizard Bladesinger's Song of Victory feature to 14th level.
+  Expansion: Keeping the base game's Bladesinger as is.
+  Expansion: Keeping the base game's Bladesinger subclass icon as is.
+  Expansion: Max XP Level is: 20
+  Expansion: EXP needed to reach level 2 is: 300
+  Expansion: EXP needed to reach level 3 is: 600
+  Expansion: EXP needed to reach level 4 is: 1800
+  Expansion: EXP needed to reach level 5 is: 3800
+  Expansion: EXP needed to reach level 6 is: 6500
+  Expansion: EXP needed to reach level 7 is: 8000
+  Expansion: EXP needed to reach level 8 is: 9000
+  Expansion: EXP needed to reach level 9 is: 12000
+  Expansion: EXP needed to reach level 10 is: 14000
+  Expansion: EXP needed to reach level 11 is: 20000
+  Expansion: EXP needed to reach level 12 is: 24000
+  Expansion: EXP needed to reach level 13 is: 30000
+  Expansion: EXP needed to reach level 14 is: 20000
+  Expansion: EXP needed to reach level 15 is: 25000
+  Expansion: EXP needed to reach level 16 is: 30000
+  Expansion: EXP needed to reach level 17 is: 30000
+  Expansion: EXP needed to reach level 18 is: 40000
+  Expansion: EXP needed to reach level 19 is: 40000
+  Expansion: EXP needed to reach level 20 is: 50000
+  Expansion: The Base Class Feat selection is set to true.
+  Expansion: Additional feat(s) settings for base game classes are disabled.
+  Expansion: Additional feat(s) settings for custom classes are disabled.
+  Expansion: Epic Boons have been not added to base game classes.
+  Expansion: Epic Boons have been not added to custom classes.
+  Dispatching event StatsLoaded (Expansion/EXP_SharedBootstrap.lua:4483) took 767.968 ms
+  ecl::ScriptExtender::OnGameStateChanged(): Loaded module
+  [Mod Configuration Menu][C]: Finished loading MCM blueprints
+  Registering type 'INotifyPropertyChanged' when it already exists in the registry? Might be problematic
+  Registered custom server network protocol
+  Registered custom client network protocol
+  Appending extender signature to ClientConnect
+  Sending ExtenderHello to client
+  Got extender support notification from host (version 2)
+  Got extender support notification from user 65536 (version 2)
+  esv::ScriptExtender::OnGameStateChanged(): Unloading session
+  ecl::ScriptExtender::OnGameStateChanged(): Unloading session
+      'Mod Configuration Menu': SE v29; flags: Lua
+      'Expansion': SE v15; flags: Lua
+  Merged config: SE v29; flags: Lua
+  Initializing client with target context Load
+  LUA VM reset
+  Loading preinit bootstrap script: Mods/Expansion/ScriptExtender/Lua/BootstrapModule.lua
+      'Mod Configuration Menu': SE v29; flags: Lua
+      'Expansion': SE v15; flags: Lua
+  Merged config: SE v29; flags: Lua
+  Initializing client with target context Game
+  LUA VM reset
+  Loading bootstrap script: Mods/BG3MCM/ScriptExtender/Lua/BootstrapClient.lua
+  [Mod Configuration Menu][C]: Volitio's Baldur's Gate 3 Mod Configuration Menu version 1.38.2 loaded (SE version 30)
+  [Mod Configuration Menu][C]: Finished loading MCM blueprints
+  Loading bootstrap script: Mods/Expansion/ScriptExtender/Lua/BootstrapClient.lua
+  Expansion: Barbarian's Optional Features enabled.
+  Expansion: Bard's Optional Features enabled.
+  Expansion: Cleric's Optional Features enabled.
+  Expansion: Druid's Optional Features enabled.
+  Expansion: Fighter's Optional Features enabled.
+  Expansion: Monk's Optional Features enabled.
+  Expansion: Paladin's Optional Features enabled.
+  Expansion: Ranger's Optional Features enabled.
+  Expansion: Rogue's Optional Features enabled.
+  Expansion: Sorcerer's Optional Features enabled.
+  Expansion: Disabled changing Sorcerer Subclasses' 11th level feature to 14th level.
+  Expansion: Warlock's Optional Features enabled.
+  Expansion: Wizard's Optional Features enabled.
+  Expansion: Keeping the Wizard Bladesinger's Song of Victory feature to 14th level.
+  Expansion: Keeping the base game's Bladesinger as is.
+  Expansion: Keeping the base game's Bladesinger subclass icon as is.
+  Expansion: Max XP Level is: 20
+  Expansion: EXP needed to reach level 2 is: 300
+  Expansion: EXP needed to reach level 3 is: 600
+  Expansion: EXP needed to reach level 4 is: 1800
+  Expansion: EXP needed to reach level 5 is: 3800
+  Expansion: EXP needed to reach level 6 is: 6500
+  Expansion: EXP needed to reach level 7 is: 8000
+  Expansion: EXP needed to reach level 8 is: 9000
+  Expansion: EXP needed to reach level 9 is: 12000
+  Expansion: EXP needed to reach level 10 is: 14000
+  Expansion: EXP needed to reach level 11 is: 20000
+  Expansion: EXP needed to reach level 12 is: 24000
+  Expansion: EXP needed to reach level 13 is: 30000
+  Expansion: EXP needed to reach level 14 is: 20000
+  Expansion: EXP needed to reach level 15 is: 25000
+  Expansion: EXP needed to reach level 16 is: 30000
+  Expansion: EXP needed to reach level 17 is: 30000
+  Expansion: EXP needed to reach level 18 is: 40000
+  Expansion: EXP needed to reach level 19 is: 40000
+  Expansion: EXP needed to reach level 20 is: 50000
+  Expansion: The Base Class Feat selection is set to true.
+  Expansion: Additional feat(s) settings for base game classes are disabled.
+  Expansion: Additional feat(s) settings for custom classes are disabled.
+  Expansion: Epic Boons have been not added to base game classes.
+  Expansion: Epic Boons have been not added to custom classes.
+  Dispatching event StatsLoaded (Expansion/EXP_SharedBootstrap.lua:4483) took 805.783 ms
+  esv::ScriptExtender::OnGameStateChanged(): Loaded module
+      'Mod Configuration Menu': SE v29; flags: Lua
+      'Expansion': SE v15; flags: Lua
+  Merged config: SE v29; flags: Lua
+  Initializing server with target context Game
+  CustomFunctionManager::ClearDynamicEntries(): Clearing dynamic functions
+  LUA VM reset
+  Loading bootstrap script: Mods/BG3MCM/ScriptExtender/Lua/BootstrapServer.lua
+  [Mod Configuration Menu][S]: Volitio's Baldur's Gate 3 Mod Configuration Menu version 1.38.2 loaded (SE version 30)
+  [Mod Configuration Menu][S]: Finished loading MCM blueprints
+  Loading bootstrap script: Mods/Expansion/ScriptExtender/Lua/BootstrapServer.lua
+  esv::ScriptExtender::OnGameStateChanged(): Loading game session
+  ecl::ScriptExtender::OnGameStateChanged(): Loaded module
+  ecl::ScriptExtender::OnClientGameStateChanged(): Loading game session
+  Savegame has persistent variables for mod e6f0c417-36f9-42d6-9617-fd7fe2efd626, but it is not loaded or has no ModTable! Variables may be lost
+  on next save!
+  ScriptExtender::OnAfterOsirisLoad: 152261 nodes
+  ExtensionStateServer::StoryLoaded()
+  CustomFunctionInjector mapping phase: 1303 -> 1303 functions
+  ScriptExtender::OnAfterOsirisLoad: 152261 nodes
+  ExtensionStateServer::StoryLoaded()
+  CustomFunctionInjector mapping phase: 1303 -> 1303 functions
+  ScriptExtender::MergeWrapper() - Started merge
+  ExtensionStateServer::StoryLoaded()
+  ScriptExtender::MergeWrapper() - Finished merge
+  [Mod Configuration Menu][S]: Finished loading MCM blueprints
+  Dispatching Osiris handler for SavegameLoaded (BG3MCM/Server/EventHandlers.lua:29) took 8.43 ms
+  [Mod Configuration Menu][C]: Finished loading MCM blueprints
+
+  Entering server Lua console.
+  S >> !TT
+  Console command does not exist: TT
+  S >>
+
+
+Now I see the issue. The conflicting UUID e6f0c417-36f9-42d6-9617-fd7fe2efd626 is coming from the GameObjectVisual mod in your mods folder. This
+  appears to be a separate mod project that's using the original Trials of Tav UUID.
+
+  Your main "Trials of JeanBon" mod (BattleMode) is correctly using a new UUID: 04488bc8-5146-4ae2-a4d6-0d5b9e22d0fa.
+
+  The warning in the log is because:
+  1. Your savegame has persistent variables stored for the old UUID (e6f0c417-36f9-42d6-9617-fd7fe2efd626)
+  2. No loaded mod is currently using that UUID with a ModTable
+
+  To fix this, you have a few options:
+
+  1. If you need the GameObjectVisual mod: Give it a unique UUID since it's currently using the original Trials of Tav UUID
+  2. If GameObjectVisual is not needed: Remove it from your load order or delete it
+  3. For your savegame: The warning is informational - the game will work, but any persistent variables from the old Trials of Tav mod will be lost on
+   the next save. If you started the save with the original Trials of Tav, you may need to start a new save for full compatibility with your modified
+  "Trials of JeanBon" version.
