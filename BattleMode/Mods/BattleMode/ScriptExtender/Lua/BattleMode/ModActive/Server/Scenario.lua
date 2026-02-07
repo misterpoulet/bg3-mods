@@ -325,8 +325,9 @@ function Action.SpawnRound()
                 interval = 100,
             })
             :After(function(enemy, posCorrectionChainable)
+                if S() == nil then return end
                 Player.Notify(__("Enemy %s spawned.", enemy:GetTranslatedName()), true, enemy:GetId())
-                Event.Trigger("ScenarioEnemySpawned", Current(), enemy)
+                Event.Trigger("ScenarioEnemySpawned", S(), enemy)
 
                 return posCorrectionChainable
             end)
@@ -408,25 +409,27 @@ end
 
 -- map entered from camp or teleport
 function Action.MapEntered()
-    if Current():HasStarted() then
+    if S() == nil or S():HasStarted() then
         return
     end
 
     Action.SpawnHelper()
 
     Schedule(function()
+        if S() == nil then return end
         -- remove corpses from previous combat
         Enemy.Cleanup()
 
-        Event.Trigger("ScenarioMapEntered", Current())
+        Event.Trigger("ScenarioMapEntered", S())
         Player.Notify(__("Entered combat area."))
 
-        for i, guid in pairs(Current().Map.Helpers) do
+        for i, guid in pairs(S().Map.Helpers) do
             StoryBypass.ClearSurfaces(guid, 4)
         end
 
         -- clearing should be over by then
         WaitTicks(33, function()
+            if S() == nil then return end
             Scenario.MarkSpawns(1)
         end)
     end)
@@ -1361,13 +1364,14 @@ Ext.Osiris.RegisterListener(
 
         L.Debug("Entered combat.", guid, combatGuid)
         Schedule(function()
+            if S() == nil then return end
             local e = Enemy.CreateTemporary(guid)
 
             if (Osi.IsAlly(Player.Host(), guid) == 0 or PersistentVars.GMMode) and Osi.GetTemplate(guid) ~= "TOT_Turn_Helper_3f0377a6-1bf5-4e9e-a186-d2a934f0a0c0" then
-                table.insert(s.SpawnedEnemies, e)
+                table.insert(S().SpawnedEnemies, e)
                 Player.Notify(__("Enemy %s joined.", e:GetTranslatedName()))
 
-                Event.Trigger("ScenarioEnemySpawned", Current(), e)
+                Event.Trigger("ScenarioEnemySpawned", S(), e)
 
                 Action.EnemyAdded(e)
             end
@@ -1436,7 +1440,7 @@ Ext.Osiris.RegisterListener(
 
                 -- might revive and rejoin battle
                 Player.Notify(__("Enemy %s killed.", e:GetTranslatedName()))
-                Event.Trigger("ScenarioEnemyKilled", Current(), e)
+                Event.Trigger("ScenarioEnemyKilled", S(), e)
 
                 spawnedKilled = true
                 break
@@ -1513,7 +1517,8 @@ Ext.Osiris.RegisterListener(
 
         Action.StartRound()
             :After(function()
-                if Current().Round == 1 then
+                if S() == nil then return end
+                if S().Round == 1 then
                     for _, p in pairs(GE.GetParty()) do
 --                        Osi.LeaveCombat(p.Uuid.EntityUuid)
                         if Osi.HasPassive(p.Uuid.EntityUuid, "DreadAmbusher") == 1 then
@@ -1550,7 +1555,8 @@ Ext.Osiris.RegisterListener(
                 end)
             end)
             :After(function()
-                Osi.ResumeCombat(s.CombatId)
+                if S() == nil then return end
+                Osi.ResumeCombat(S().CombatId)
 
                 Osi.EndTurn(uuid)
             end)
@@ -1610,14 +1616,17 @@ Ext.Osiris.RegisterListener(
 				return specific == nil or eq(e, specific)
 			end)
 			Defer(1000, function()
+				if S() == nil then return end
 				for _, enemy in ipairs(enemies) do
 					Scenario.AssignToGM(enemy)
 				end
 			end)
 			Defer(400, function()
+				if S() == nil then return end
 				Action.RemoveDupeHelper()
 			end)
 			Defer(1400, function()
+				if S() == nil then return end
 				Net.Send("RemoveHelperPortraits")
 			end)
 		end
