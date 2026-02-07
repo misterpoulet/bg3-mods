@@ -1,0 +1,106 @@
+flowchart TB
+    subgraph INIT["1. SCENARIO INITIALIZATION"]
+        A[Player selects scenario] --> B[Scenario.Start]
+        B --> C{Theme provided?}
+        C -->|No| D[PickRandomTheme]
+        C -->|Yes| E[Use template.Theme]
+        D --> F[Filter themes with 2+ tiers]
+        F --> G[Random select viable theme]
+        G --> H[Store scenario.Theme]
+        E --> H
+        H --> I[Build enemy list per round]
+        I --> J[Generate spawn positions]
+        J --> K[Player.ReturnToCamp]
+    end
+
+    subgraph MAP["2. MAP ENTRY"]
+        K --> L[Event: MapTeleported]
+        L --> M{Is scenario map?}
+        M -->|Yes| N[Action.MapEntered]
+        M -->|No| O[Exit]
+        N --> P[Spawn CombatHelper NPC]
+        P --> Q[Enemy.Cleanup old corpses]
+        Q --> R[Show VFX on spawn points]
+        R --> S[Wait for combat start]
+    end
+
+    subgraph COMBAT["3. COMBAT ROUNDS"]
+        S --> T[CombatHelper turn starts]
+        T --> U[ACTION.StartRound]
+        U --> V[Increment Round counter]
+        V --> W[ACTION.SpawnRound]
+        W --> X[For each enemy in round]
+        X --> Y[Get spawn position]
+        Y --> Z[Enemy Spawn at position]
+        Z --> AA[Enemy Modify stats]
+        AA --> AB[Enemy Combat enter fight]
+        AB --> AC{More enemies?}
+        AC -->|Yes| X
+        AC -->|No| AD[Event: ScenarioRoundSpawned]
+        AD --> AE{Enemy killed?}
+        AE -->|Yes| AF[Add to KilledEnemies]
+        AF --> AG[Event: ScenarioEnemyKilled]
+        AG --> AH[GenerateSimpleLoot]
+        AH --> AI[SpawnLoot at position]
+        AI --> AJ{More enemies alive?}
+        AE -->|No| AJ
+        AJ -->|Yes| AE
+        AJ -->|No| AK{More rounds?}
+        AK -->|Yes| T
+        AK -->|No| AL[Scenario.End]
+    end
+
+    subgraph REWARDS["4. REWARDS AND SCORE"]
+        AL --> AM[Action.GiveReward]
+        AM --> AN[Gold: KillScore x 10]
+        AM --> AO[EXP: 100 + KillScore x 10]
+        AL --> AP{Rogue Mode?}
+        AP -->|Yes| AQ[GameMode.RewardRogueScore]
+        AQ --> AR[Base score: 5-10]
+        AR --> AS{Perfect clear?}
+        AS -->|Yes| AT[Bonus EXP + Loot rolls]
+        AS -->|No| AU[Standard reward]
+        AT --> AV[UpdateRogueScore]
+        AU --> AV
+        AV --> AW[Apply score cap by level]
+        AP -->|No| AX[Standard loot only]
+        AW --> AY[Item.GenerateLoot]
+        AX --> AY
+        AY --> AZ[rolls = KillScore x multiplier]
+        AZ --> BA[Random category]
+        BA --> BB[Random rarity from pool]
+        BB --> BC[SpawnLoot at map enter]
+        BC --> BD[Return to Camp]
+    end
+
+    subgraph THEME["THEME SYSTEM"]
+        TH1[29 Themes defined] --> TH2[Undead Drow Goblinoid etc]
+        TH2 --> TH3[Each has pattern list]
+        TH3 --> TH4[Enemy.MatchesTheme]
+        TH4 --> TH5[GetByThemeAndTier]
+        TH5 --> TH6[Filtered enemy pool]
+    end
+
+    subgraph TIERS["TIER SYSTEM"]
+        TR1[9 Tiers] --> TR2[low mid high]
+        TR2 --> TR3[ultra epic legendary]
+        TR3 --> TR4[mythical divine avatar]
+        TR4 --> TR5[Value: 4 to 240]
+        TR5 --> TR6[Min RogueScore required]
+    end
+
+    subgraph DIFFICULTY["ROGUE DIFFICULTY SCALING"]
+        DF1[RogueScore input] --> DF2[x = score / 200]
+        DF2 --> DF3{Hard mode?}
+        DF3 -->|Yes| DF4[x times 2]
+        DF3 -->|No| DF5[Standard scaling]
+        DF4 --> DF6[Apply to abilities]
+        DF5 --> DF6
+        DF6 --> DF7[Top 2: full mod]
+        DF6 --> DF8[Mid 2: half mod]
+        DF6 --> DF9[Bottom 2: quarter mod]
+    end
+
+    I -.-> TH1
+    W -.-> TR1
+    AQ -.-> DF1
