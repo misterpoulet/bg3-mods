@@ -162,9 +162,22 @@ function Action.SpawnHelper()
 
     local x, y, z = table.unpack(s.Map.Enter)
 
+    L.Info("Spawning combat helper at:", x, y, z)
+    L.Info("Template ID:", C.ScenarioHelper.TemplateId)
+    L.Info("Map name:", s.Map.Name)
+    L.Info("Map region:", s.Map.Region)
+
+    local template = Ext.Template.GetTemplate(C.ScenarioHelper.TemplateId)
+    if template then
+        L.Info("Template found:", template.Name, template.TemplateType)
+    else
+        L.Error("Template NOT found in game data! Check if Public/BattleMode folder is deployed.")
+    end
+
     local helper = Osi.CreateAt(C.ScenarioHelper.TemplateId, x, y, z, 0, 1, "")
     if not helper then
-        L.Error("Failed to create combat helper.")
+        L.Error("Failed to create combat helper. Osi.CreateAt returned nil.")
+        L.Error("This usually means: 1) Template doesn't exist, 2) Position is invalid, 3) Mod data not loaded")
         Scenario.Stop()
         return
     end
